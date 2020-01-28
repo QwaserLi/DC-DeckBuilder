@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    List<Card> Hand;
+    private List<Card> Hand;
     List<Card> Deck;
     List<Card> Discard_Pile;
 
@@ -72,5 +72,9 @@ public class Player : MonoBehaviour
             victoryPointTotal += c.Victory_Points;
         }
         return victoryPointTotal;
+    }
+
+    public List<Card> getHand() {
+        return Hand;
     }
 }
