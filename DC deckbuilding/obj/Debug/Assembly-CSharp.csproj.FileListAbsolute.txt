@@ -237,3 +237,7 @@ C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC deckbuilding\obj\Debu
 C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC deckbuilding\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC deckbuilding\obj\Debug\Assembly-CSharp.dll
 C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC deckbuilding\obj\Debug\Assembly-CSharp.pdb
+C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC-DeckBuilder\DC deckbuilding\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC-DeckBuilder\DC deckbuilding\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC-DeckBuilder\DC deckbuilding\obj\Debug\Assembly-CSharp.dll
+C:\Users\QwazerLi\Documents\GitHub\DC-Deckbuilding-Game\DC-DeckBuilder\DC deckbuilding\obj\Debug\Assembly-CSharp.pdb

@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private List<Card> Hand;
-    List<Card> Deck;
-    List<Card> Discard_Pile;
+
+    //Used to tell the start position of the Hand to place cards in
+    Vector3 HandStartPos = new Vector3(-0.5f,-3,0);
+    //Used for to determine how far apart cards in the Hand should be placed
+    private const float Hand_Increment = 1.75f;
+
+    private List<Card> Hand = new List<Card>();
+    private List<Card> Deck = new List<Card>();
+    private List<Card> Discard_Pile;
 
     //List of Locations that the player has played
     List<Card> Locations;
@@ -16,10 +22,32 @@ public class Player : MonoBehaviour
     //Used for keeping track of remaining power each turn
     int CurrentPowerTotal;
 
+    //Test Card
+    public GameObject TestCard;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        //TEMP: Fill Hand and Deck with temp cards
+        Deck = new List<Card>();
+        for (int i = 0; i < 10; i++)
+        {
+            if (TestCard != null)
+            {
+                Card c = Instantiate(TestCard, new Vector3(-3.5f, -2, 0), Quaternion.identity).GetComponent<Card>();
+                Deck.Add(c);
+            }
+        }
+
+
+        DrawCards(4);
+
+        for (int i = 0; i < Hand.Count; i++)
+        {
+            Vector3 newCardPos = HandStartPos;
+            newCardPos.x += i * Hand_Increment;
+            Hand[i].gameObject.transform.position = newCardPos;
+        }
     }
 
     // Update is called once per frame
@@ -53,6 +81,9 @@ public class Player : MonoBehaviour
 
         }
         List<Card> sublist = Deck.GetRange(0, Amount);
+        //Flip cards now because they are now visible
+        foreach (Card c in sublist)
+            c.gameObject.GetComponent<Card_Logic>().FlipCard();
         Hand.AddRange(sublist);
         Deck.RemoveRange(0, Amount);
     }

@@ -29,13 +29,20 @@ public class PlaySystem : MonoBehaviour
         AmtPlayers = 2;
 
         //TEMP: Fill up the player list
-        players.Add(GameObject.Find("Player1").AddComponent<Player>());
-        players.Add(GameObject.Find("Player2").AddComponent<Player>());
+        players.Add(GameObject.Find("Player1").GetComponent<Player>());
+        players.Add(GameObject.Find("Player2").GetComponent<Player>());
 
-        //Set Current player to player 1
+
+        //TEMP: Not nice code But current just to hide all the other players cards at the beginning of the game
+        foreach (Player p in players) {
+            currentPlayer = p;
+            UnRenderHand();    
+        }
+
+        //Set Current player to player 1 and show hand
         state = PlayState.P1Turn;
         currentPlayer = players[0];
-
+        RenderPlayerHand();
     }
 
 
@@ -72,6 +79,7 @@ public class PlaySystem : MonoBehaviour
         foreach (Card c in playerHand)
         {
             //UnRenderCards
+            c.gameObject.SetActive(false);
         }
     }
 
@@ -81,38 +89,50 @@ public class PlaySystem : MonoBehaviour
         List<Card> playerHand = currentPlayer.getHand();
         foreach(Card c in playerHand) {
             //RenderCards
+            c.gameObject.SetActive(true);
         }
     }
 
-    public void nextPlayerTurn() {
+    //Called when the end turn button is pressed to end current player turn and set up next player turn
+    public void prepareNextTurn()
+    {
+        UnRenderHand();
+        changePlayerTurn();
+        RenderPlayerHand();
+
+
+    }
+
+    private void changePlayerTurn() {
         if (state == PlayState.P1Turn) {
             state = PlayState.P2Turn;
-           // currentPlayer = players[1];
+            currentPlayer = players[1];
         } else if (state == PlayState.P2Turn) {
             if (AmtPlayers == 2) {
                 state = PlayState.P1Turn;
-              //  currentPlayer = players[0];
+                currentPlayer = players[0];
             }
             else {
                 state = PlayState.P3Turn;
-              //  currentPlayer = players[2];
+                currentPlayer = players[2];
             }
         } else if (state == PlayState.P3Turn) {
             if (AmtPlayers == 3)
             {
                 state = PlayState.P1Turn;
-             //   currentPlayer = players[0];
+                currentPlayer = players[0];
             }
             else
             {
                 state = PlayState.P4Turn;
-              //  currentPlayer = players[3];
+                currentPlayer = players[3];
             }
         } else if (state == PlayState.P4Turn) {
             state = PlayState.P1Turn;
-          //  currentPlayer = players[0];
+            currentPlayer = players[0];
         }
     }
 
-    
+
+
 }

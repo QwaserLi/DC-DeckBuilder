@@ -14,8 +14,23 @@ public class Card : MonoBehaviour
     public int Victory_Points;
     public int Card_Cost;
 
+    //For Image of the card
+    //public Sprite front_Sprite;
+    //public Sprite back_Sprite;
+
     //All cards will have Power too make it to calucalate power and cards that don't have power will just have 0
     public int power;
 
     Card_Type card_Type;
+
+
+    private void Start()
+    {
+        //TEMP:TEST CARD FOR NOW
+        Card_Name = "Aquamans trident";
+        Victory_Points = 1;
+        Card_Cost = 3;
+        power = 2;
+    }
+
 }

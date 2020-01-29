@@ -5,21 +5,26 @@ using UnityEngine;
 public class Card_Logic : MonoBehaviour
 {
     private bool isDragging;
-    private float startPosX;
-        
+    private float startPosX;    
     private float startPosY;
-    
+    private bool FaceDown = true;
+
+    //TEMP: Put here for now as image of the cards need to Change 
+    public Sprite front_Sprite;
+    public Sprite back_Sprite;
+
+    private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isDragging)
+        if (isDragging && !FaceDown)
         {
             Vector3 mousePos;
             mousePos = Input.mousePosition;
@@ -27,6 +32,7 @@ public class Card_Logic : MonoBehaviour
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
             transform.position = new Vector3(mousePos.x - startPosX, mousePos.y - startPosY, 0);
         }
+        
     }
 
     void OnMouseDown()
@@ -50,5 +56,17 @@ public class Card_Logic : MonoBehaviour
     void OnMouseUp()
     {
         isDragging = false;
+    }
+
+    public void FlipCard() {
+        FaceDown = !FaceDown;
+        //TEMP for card facing down
+        if (FaceDown)
+        {
+            spriteRenderer.sprite = back_Sprite;
+        }
+        else {
+            spriteRenderer.sprite = front_Sprite;
+        }
     }
 }
