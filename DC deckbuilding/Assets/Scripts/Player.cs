@@ -6,13 +6,17 @@ public class Player : MonoBehaviour
 {
 
     //Used to tell the start position of the Hand to place cards in
-    Vector3 HandStartPos = new Vector3(-0.5f,-3,0);
+    Vector3 HandStartPos = new Vector3(-0.5f, -3, 0);
     //Used for to determine how far apart cards in the Hand should be placed
     private const float Hand_Increment = 1.75f;
 
+    //Used for the location of the discard pile
+    Vector3 DiscardPilePos = new Vector3(-2f, -2, 0);
+
+
     private List<Card> Hand = new List<Card>();
     private List<Card> Deck = new List<Card>();
-    private List<Card> Discard_Pile;
+    private List<Card> Discard_Pile = new List<Card>();
 
     //List of Locations that the player has played
     List<Card> Locations;
@@ -24,7 +28,7 @@ public class Player : MonoBehaviour
 
     //Test Card
     public GameObject TestCard;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,19 +45,6 @@ public class Player : MonoBehaviour
 
 
         DrawCards(4);
-
-        for (int i = 0; i < Hand.Count; i++)
-        {
-            Vector3 newCardPos = HandStartPos;
-            newCardPos.x += i * Hand_Increment;
-            Hand[i].gameObject.transform.position = newCardPos;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void addCardToDeck(Card card) {
@@ -74,18 +65,44 @@ public class Player : MonoBehaviour
     }
 
 
-    void DrawCards(int Amount) {
-        if (Amount > Deck.Count)
+    public void DrawCards(int Amount) {
+        if (Amount >= Deck.Count)
         {
+            //TEMP
+            print("Not enough Cards in deck");
+            return;
             //Draw Remaining cards in deck then shuffle discard and draw the remaining
 
         }
         List<Card> sublist = Deck.GetRange(0, Amount);
         //Flip cards now because they are now visible
-        foreach (Card c in sublist)
-            c.gameObject.GetComponent<Card_Logic>().FlipCard();
         Hand.AddRange(sublist);
+        for (int i = 0; i < Hand.Count;i++)
+        {
+            Hand[i].gameObject.GetComponent<Card_Logic>().FlipCard();
+            Vector3 newCardPos = HandStartPos;
+            newCardPos.x += i * Hand_Increment;
+            Hand[i].gameObject.transform.position = newCardPos;
+        }
         Deck.RemoveRange(0, Amount);
+    }
+
+    public void DiscardHand() {
+        
+        //Add each card in Hand to Discard pile then clear the hand
+        foreach (Card c in Hand) {
+            DiscardCard(c);
+        }
+        Hand.Clear();
+    }
+
+    //To discard single cards
+    void DiscardCard(Card c) {
+        Discard_Pile.Add(c);
+
+        //Move Card
+        c.gameObject.transform.position = DiscardPilePos;
+        
     }
 
     int CalculatePowerInHand() {

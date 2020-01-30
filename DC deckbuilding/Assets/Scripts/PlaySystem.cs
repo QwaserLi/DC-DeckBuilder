@@ -96,6 +96,8 @@ public class PlaySystem : MonoBehaviour
     //Called when the end turn button is pressed to end current player turn and set up next player turn
     public void prepareNextTurn()
     {
+        currentPlayer.DiscardHand();
+        currentPlayer.DrawCards(5);
         UnRenderHand();
         changePlayerTurn();
         RenderPlayerHand();
