@@ -8,6 +8,7 @@ public class Card_Logic : MonoBehaviour
     private float startPosX;    
     private float startPosY;
     private bool FaceDown = true;
+    private bool isInLineUp = true;
 
     //TEMP: Put here for now as image of the cards need to Change 
     public Sprite front_Sprite;
@@ -45,8 +46,8 @@ public class Card_Logic : MonoBehaviour
             mousePos.z = Camera.main.nearClipPlane;
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-            startPosX = mousePos.x - transform.localPosition.x;
-            startPosY = mousePos.y - transform.localPosition.y;
+            startPosX = mousePos.x - transform.position.x;
+            startPosY = mousePos.y - transform.position.y;
 
             isDragging = true;
 
@@ -68,5 +69,9 @@ public class Card_Logic : MonoBehaviour
         else {
             spriteRenderer.sprite = front_Sprite;
         }
+    }
+
+    public void RemoveFromLineUp() {
+        isInLineUp = false;
     }
 }

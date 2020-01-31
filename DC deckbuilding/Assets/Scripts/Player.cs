@@ -6,12 +6,15 @@ public class Player : MonoBehaviour
 {
 
     //Used to tell the start position of the Hand to place cards in
-    Vector3 HandStartPos = new Vector3(-0.5f, -3, 0);
-    //Used for to determine how far apart cards in the Hand should be placed
-    private const float Hand_Increment = 1.75f;
-
+    Vector3 HandStartPos;
     //Used for the location of the discard pile
-    Vector3 DiscardPilePos = new Vector3(-2f, -2, 0);
+    Vector3 DiscardPilePos;
+    Vector3 DeckPos;
+
+    //Used for to determine how far apart cards in the Hand should be placed
+    private const float Hand_Increment = 6f;
+
+
 
 
     private List<Card> Hand = new List<Card>();
@@ -32,14 +35,20 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DeckPos = transform.Find("Deck").position;
+        HandStartPos = transform.Find("Hand Start").position;
+        DiscardPilePos = transform.Find("Discard").position;
+
+
         //TEMP: Fill Hand and Deck with temp cards
         Deck = new List<Card>();
         for (int i = 0; i < 10; i++)
         {
             if (TestCard != null)
             {
-                Card c = Instantiate(TestCard, new Vector3(-3.5f, -2, 0), Quaternion.identity).GetComponent<Card>();
-                Deck.Add(c);
+                Card c = Instantiate(TestCard, DeckPos, transform.rotation).GetComponent<Card>();
+                c.gameObject.GetComponent<Card_Logic>().RemoveFromLineUp();
+                addCardToDeck(c);
             }
         }
 
@@ -48,6 +57,8 @@ public class Player : MonoBehaviour
     }
 
     void addCardToDeck(Card card) {
+        card.gameObject.transform.parent = transform;
+
         Deck.Add(card);
     }
 
@@ -75,13 +86,24 @@ public class Player : MonoBehaviour
 
         }
         List<Card> sublist = Deck.GetRange(0, Amount);
-        //Flip cards now because they are now visible
+
+
+        //Put cards into hand and Flip cards now because they are now visible
         Hand.AddRange(sublist);
         for (int i = 0; i < Hand.Count;i++)
         {
             Hand[i].gameObject.GetComponent<Card_Logic>().FlipCard();
             Vector3 newCardPos = HandStartPos;
-            newCardPos.x += i * Hand_Increment;
+
+            //TODO/TEMP: Will have to change it when making it multiplayer
+
+            if (gameObject.name.Equals("Player2") || gameObject.name.Equals("Player4")) {
+                newCardPos.y += -i * (Hand_Increment / Hand.Count);
+
+            }
+            else {
+                newCardPos.x += i * (Hand_Increment / Hand.Count);
+            }
             Hand[i].gameObject.transform.position = newCardPos;
         }
         Deck.RemoveRange(0, Amount);
@@ -124,5 +146,20 @@ public class Player : MonoBehaviour
 
     public List<Card> getHand() {
         return Hand;
+    }
+
+
+    //GIZMOS
+    void OnDrawGizmos()
+    {
+        // Draw a semitransparent blue cube at the transforms position
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawCube(transform.Find("Deck").transform.position, new Vector3(1, 2, 1));
+
+        Gizmos.color = new Color(1, 0, 1, 0.5f);
+        Gizmos.DrawCube(transform.Find("Discard").transform.position, new Vector3(1, 2, 1));
+
+        Gizmos.color = new Color(0, 0, 1, 0.5f);
+        Gizmos.DrawCube(transform.Find("Hand Start").transform.position, new Vector3(1, 2, 1));
     }
 }
