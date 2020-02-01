@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class Card_Logic : MonoBehaviour
 {
+    //For the card preview so it doesn't change when you drag and hover multiple cards
+    private static bool hoveringCard;
+
     private bool isDragging;
-    private float startPosX;    
-    private float startPosY;
+    //For dragging the card around
+    private float startMousePosX;    
+    private float startMousePosY;
+
+    //Original Position for when after you drag the card and let go in at wrong position it snap backs to the original position
+    private Vector3 snapBackPos;
+
     private bool FaceDown = true;
     private bool isInLineUp = true;
 
@@ -31,7 +39,7 @@ public class Card_Logic : MonoBehaviour
             mousePos = Input.mousePosition;
             mousePos.z = Camera.main.nearClipPlane;
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            transform.position = new Vector3(mousePos.x - startPosX, mousePos.y - startPosY, 0);
+            transform.position = new Vector3(mousePos.x - startMousePosX, mousePos.y - startMousePosY, 0);
         }
         
     }
@@ -46,8 +54,8 @@ public class Card_Logic : MonoBehaviour
             mousePos.z = Camera.main.nearClipPlane;
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-            startPosX = mousePos.x - transform.position.x;
-            startPosY = mousePos.y - transform.position.y;
+            startMousePosX = mousePos.x - transform.position.x;
+            startMousePosY = mousePos.y - transform.position.y;
 
             isDragging = true;
 
@@ -57,6 +65,27 @@ public class Card_Logic : MonoBehaviour
     void OnMouseUp()
     {
         isDragging = false;
+
+        //TODO: Need to make it so it only snaps back in some cases when in hand and when on the line up otherwise dont snap back
+        if (false) {
+            transform.position = snapBackPos;
+        }
+    }
+
+    void OnMouseOver()
+    {
+        //If your mouse hovers over the GameObject with the script attached, output this message
+        if (!FaceDown && !hoveringCard) {
+            CardPreview.ChangePreview(front_Sprite);
+            hoveringCard = true;
+        }
+    }
+
+    void OnMouseExit()
+    {
+        //The mouse is no longer hovering over the GameObject so output this message each frame
+        CardPreview.ChangePreview(back_Sprite);
+        hoveringCard = false;
     }
 
     public void FlipCard() {
@@ -71,6 +100,10 @@ public class Card_Logic : MonoBehaviour
         }
     }
 
+    public void setSnapBackPos() {
+        snapBackPos = transform.position;
+
+    }
     public void RemoveFromLineUp() {
         isInLineUp = false;
     }

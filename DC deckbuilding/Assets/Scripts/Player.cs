@@ -14,9 +14,6 @@ public class Player : MonoBehaviour
     //Used for to determine how far apart cards in the Hand should be placed
     private const float Hand_Increment = 6f;
 
-
-
-
     private List<Card> Hand = new List<Card>();
     private List<Card> Deck = new List<Card>();
     private List<Card> Discard_Pile = new List<Card>();
@@ -47,7 +44,7 @@ public class Player : MonoBehaviour
             if (TestCard != null)
             {
                 Card c = Instantiate(TestCard, DeckPos, transform.rotation).GetComponent<Card>();
-                c.gameObject.GetComponent<Card_Logic>().RemoveFromLineUp();
+                c.getCardLogic().RemoveFromLineUp();
                 addCardToDeck(c);
             }
         }
@@ -92,7 +89,7 @@ public class Player : MonoBehaviour
         Hand.AddRange(sublist);
         for (int i = 0; i < Hand.Count;i++)
         {
-            Hand[i].gameObject.GetComponent<Card_Logic>().FlipCard();
+            Hand[i].getCardLogic().FlipCard();
             Vector3 newCardPos = HandStartPos;
 
             //TODO/TEMP: Will have to change it when making it multiplayer
@@ -105,6 +102,7 @@ public class Player : MonoBehaviour
                 newCardPos.x += i * (Hand_Increment / Hand.Count);
             }
             Hand[i].gameObject.transform.position = newCardPos;
+            Hand[i].getCardLogic().setSnapBackPos();
         }
         Deck.RemoveRange(0, Amount);
     }

@@ -14,6 +14,8 @@ public class Card : MonoBehaviour
     public int Victory_Points;
     public int Card_Cost;
 
+    private Card_Logic logic;
+    
     //For Image of the card
     //public Sprite front_Sprite;
     //public Sprite back_Sprite;
@@ -23,6 +25,11 @@ public class Card : MonoBehaviour
 
     Card_Type card_Type;
 
+    private void Awake()
+    {
+        logic = GetComponent<Card_Logic>();
+
+    }
 
     private void Start()
     {
@@ -31,6 +38,11 @@ public class Card : MonoBehaviour
         Victory_Points = 1;
         Card_Cost = 3;
         power = 2;
+
+    }
+
+    public Card_Logic getCardLogic() {
+        return logic;
     }
 
 }

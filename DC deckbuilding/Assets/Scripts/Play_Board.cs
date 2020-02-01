@@ -15,49 +15,32 @@ public class Play_Board : MonoBehaviour
     const int Line_Up_Max_Size = 5;
     //Used for to determine how far cards in the line up should be placed
     private const float Line_Up_Max_Length = 10; // MIGHT NOT BE USED
-    private const float Line_Up_Increment = 1.75f; 
+    private const float Line_Up_Increment = 1.5f; 
 
 
     //Used to tell the start position of the line up to place cards in
-    private Vector3 LineUpStartPos = new Vector3(-3.5f, 1.5f, 0);
+    private Vector3 LineUpStartPos;
+    private Vector3 KickPilePos;
+    private Vector3 MainDeckPos;
 
     //TEMP: Test Card
     public GameObject TestCard;
 
-    void AddCardsToLineUp(){
-        //Check for if there are no more cards in the main deck
-        int Amount_to_add = Line_Up_Max_Size - LineUp.Count;
-
-        if (Amount_to_add > MainDeck.Count) {
-            //Might need to move else where
-            GameOver();
-        }
-
-        List<Card> sublist = MainDeck.GetRange(0, Amount_to_add);
-        //Flip cards now because they are visible
-        foreach (Card c in sublist)
-            c.gameObject.GetComponent<Card_Logic>().FlipCard();
-
-        LineUp.AddRange(sublist);
-        MainDeck.RemoveRange(0, Amount_to_add);
-
-    }
-
-    void GameOver() {
-
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        MainDeckPos = transform.Find("MainDeck").position;
+        LineUpStartPos = transform.Find("LineUp Start").position;
+        KickPilePos = transform.Find("Kick").position;
+
         //TEMP: For testing if the game system works
         for (int i = 0; i < 10; i++)
         {
             //TEMP: IF statement to stop error that says that the card is null
             if (TestCard != null)
             {
-                Card c = Instantiate(TestCard, new Vector3(3.5f, 4.5f, 0), Quaternion.identity).GetComponent<Card>();
+                Card c = Instantiate(TestCard, MainDeckPos, Quaternion.identity).GetComponent<Card>();
                 MainDeck.Add(c);
             }
 
@@ -66,12 +49,58 @@ public class Play_Board : MonoBehaviour
         //Take cards from Main Deck and put them line up
         AddCardsToLineUp();
 
-        for (int i = 0; i < LineUp.Count; i++) {
+
+        
+    }
+
+    void AddCardsToLineUp()
+    {
+        //Check for if there are no more cards in the main deck
+        int Amount_to_add = Line_Up_Max_Size - LineUp.Count;
+
+        if (Amount_to_add > MainDeck.Count)
+        {
+            //Might need to move else where
+            GameOver();
+        }
+
+        List<Card> sublist = MainDeck.GetRange(0, Amount_to_add);
+        //Flip cards now because they are visible
+        foreach (Card c in sublist)
+            c.getCardLogic().FlipCard();
+
+        LineUp.AddRange(sublist);
+        MainDeck.RemoveRange(0, Amount_to_add);
+
+        //Position cards in the line up
+        for (int i = 0; i < LineUp.Count; i++)
+        {
             Vector3 newCardPos = LineUpStartPos;
             newCardPos.x += i * Line_Up_Increment;
             LineUp[i].gameObject.transform.position = newCardPos;
+            LineUp[i].getCardLogic().setSnapBackPos();
         }
-        
+
+    }
+
+    void GameOver()
+    {
+
+    }
+
+
+    //GIZMOS
+    void OnDrawGizmos()
+    {
+        // Draw a semitransparent blue cube at the transforms position
+        Gizmos.color = new Color(1, 1, 0, 0.5f);
+        Gizmos.DrawCube(transform.Find("MainDeck").transform.position, new Vector3(1, 2, 1));
+
+        Gizmos.color = new Color(1, 0.5f, 1, 0.5f);
+        Gizmos.DrawCube(transform.Find("Kick").transform.position, new Vector3(1, 2, 1));
+
+        Gizmos.color = new Color(0.6f, 0, 1, 0.5f);
+        Gizmos.DrawCube(transform.Find("LineUp Start").transform.position, new Vector3(1, 2, 1));
     }
 
 }
