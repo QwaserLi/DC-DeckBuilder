@@ -18,6 +18,10 @@ public class Card_Logic : MonoBehaviour
     private bool FaceDown = true;
     private bool isInLineUp = true;
 
+    //Checking if a card is owned or not
+    private Player PlayerOwned;
+    private bool isOwned;
+
     //TEMP: Put here for now as image of the cards need to Change 
     public Sprite front_Sprite;
     public Sprite back_Sprite;
@@ -67,7 +71,7 @@ public class Card_Logic : MonoBehaviour
         isDragging = false;
 
         //TODO: Need to make it so it only snaps back in some cases when in hand and when on the line up otherwise dont snap back
-        if (false) {
+        if (!FaceDown) {
             transform.position = snapBackPos;
         }
     }
@@ -100,6 +104,21 @@ public class Card_Logic : MonoBehaviour
         }
     }
 
+    public void setPlayerOwned(Player player) {
+        PlayerOwned = player;
+        isOwned = true;
+    }
+
+    public bool getOwned() {
+        return isOwned;
+    }
+
+    public Player getPlayerOwned() {
+        return PlayerOwned;
+    }
+
+
+    //Sets SnapBackpos to the current position
     public void setSnapBackPos() {
         snapBackPos = transform.position;
 

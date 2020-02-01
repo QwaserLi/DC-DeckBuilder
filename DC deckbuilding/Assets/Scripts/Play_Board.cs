@@ -48,9 +48,6 @@ public class Play_Board : MonoBehaviour
 
         //Take cards from Main Deck and put them line up
         AddCardsToLineUp();
-
-
-        
     }
 
     void AddCardsToLineUp()

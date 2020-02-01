@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
             {
                 Card c = Instantiate(TestCard, DeckPos, transform.rotation).GetComponent<Card>();
                 c.getCardLogic().RemoveFromLineUp();
+                c.getCardLogic().setPlayerOwned(this);
                 addCardToDeck(c);
             }
         }
@@ -122,7 +123,8 @@ public class Player : MonoBehaviour
 
         //Move Card
         c.gameObject.transform.position = DiscardPilePos;
-        
+        //TEMP: To make it so that Cards in the discard pile stay in the discard pile so we snap it back there for now
+        c.getCardLogic().setSnapBackPos();
     }
 
     int CalculatePowerInHand() {
@@ -144,6 +146,24 @@ public class Player : MonoBehaviour
 
     public List<Card> getHand() {
         return Hand;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Card") {
+
+            Card c = collision.GetComponent<Card>();
+            purchaseCard(c);
+        }
+    }
+
+    private void purchaseCard(Card c) {
+        //Buy card if have enough power, is in the line up and not in the deck, hand or discard or you don't own the card
+        //TODO: Check current player that owns the card
+        if (!Hand.Contains(c) && !c.getCardLogic().getOwned())
+        {
+            print("Card");
+        }
     }
 
 
