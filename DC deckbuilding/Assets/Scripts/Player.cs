@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
     public void DrawCards(int Amount) {
         if (Amount >= Deck.Count)
         {
-            //TEMP
+            //TEMP: Make sure to shuffle deck when not enough cards to draw;
             print("Not enough Cards in deck");
             return;
             //Draw Remaining cards in deck then shuffle discard and draw the remaining
@@ -184,14 +184,15 @@ public class Player : MonoBehaviour
     private void purchaseCard(Card c) {
         //TODO: Buy card if have enough power, 
         //is in the line up 
-        //and not in the deck, hand or discard or you don't own the card
-        //TODO: Check current player that owns the card
+        //and not hand 
+        //Not Owned
+        //TODO: Not FaceDown
         //TODO: Clean Code
         Card_Logic logic = c.getCardLogic();
         if (!Hand.Contains(c) && !logic.getOwned() && logic.IsInPurchaseArea() && logic.IsInLineUp() && PlaySystem.getCurrentPlayer() == this)
         {
             //Add to discard Pile and Remove from line Up list and set ownership to player
-            //Need If here to check if you release the mouse button then you buy it rather than just when you hover over a player
+            //TEMP? Need If here to check if you release the mouse button then you buy it rather than just when you hover over a player
             if (Input.GetMouseButtonUp(0)) {
                 c.getCardLogic().setPlayerOwned(this);
                 DiscardCard(c);

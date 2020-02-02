@@ -21,6 +21,7 @@ public class PlaySystem : MonoBehaviour
     void Start()
     {
         state = PlayState.Start;
+        playBoard = GetComponent<Play_Board>();
         SetupGame();
     }
 
@@ -98,11 +99,10 @@ public class PlaySystem : MonoBehaviour
     {
         currentPlayer.DiscardHand();
         currentPlayer.DrawCards(5);
+        playBoard.AddCardsToLineUp();
         UnRenderHand();
         changePlayerTurn();
         RenderPlayerHand();
-
-
     }
 
     private void changePlayerTurn() {

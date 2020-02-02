@@ -47,7 +47,7 @@ public class Play_Board : MonoBehaviour
         AddCardsToLineUp();
     }
 
-    void AddCardsToLineUp()
+    public void AddCardsToLineUp()
     {
         //Check for if there are no more cards in the main deck
         int Amount_to_add = Line_Up_Max_Size - LineUp.Count;
@@ -55,7 +55,9 @@ public class Play_Board : MonoBehaviour
         if (Amount_to_add > MainDeck.Count)
         {
             //Might need to move else where
+            //TODO: GameOver Method not complete yet
             GameOver();
+            return;
         }
 
         List<Card> sublist = MainDeck.GetRange(0, Amount_to_add);
@@ -77,9 +79,10 @@ public class Play_Board : MonoBehaviour
 
     }
 
+    //TODO: Gets Called when the game in over
     void GameOver()
     {
-
+        print("Not Enough Cards in Main Deck");
     }
 
     public static void RemoveFromLineUp(Card c) {
