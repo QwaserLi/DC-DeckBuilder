@@ -55,8 +55,6 @@ public class Player : MonoBehaviour
     }
 
     void addCardToDeck(Card card) {
-        card.gameObject.transform.parent = transform;
-
         Deck.Add(card);
     }
 
@@ -120,9 +118,11 @@ public class Player : MonoBehaviour
     //To discard single cards
     void DiscardCard(Card c) {
         Discard_Pile.Add(c);
-
         //Move Card
         c.gameObject.transform.position = DiscardPilePos;
+
+        //Make it so the card rotates for the player
+        c.gameObject.transform.rotation = transform.rotation;
         //TEMP: To make it so that Cards in the discard pile stay in the discard pile so we snap it back there for now
         c.getCardLogic().setSnapBackPos();
     }
@@ -148,21 +148,55 @@ public class Player : MonoBehaviour
         return Hand;
     }
 
+    //TODO: Potentially optimize the code to make it cleaner and run smoother
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Card") {
 
             Card c = collision.GetComponent<Card>();
+            c.getCardLogic().setIsInPurchaseArea(true);
             purchaseCard(c);
         }
     }
 
-    private void purchaseCard(Card c) {
-        //Buy card if have enough power, is in the line up and not in the deck, hand or discard or you don't own the card
-        //TODO: Check current player that owns the card
-        if (!Hand.Contains(c) && !c.getCardLogic().getOwned())
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Card")
         {
-            print("Card");
+
+            Card c = collision.GetComponent<Card>();
+            c.getCardLogic().setIsInPurchaseArea(true);
+            purchaseCard(c);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Card")
+        {
+            Card c = collision.GetComponent<Card>();
+            c.getCardLogic().setIsInPurchaseArea(false);
+        }
+    }
+
+    private void purchaseCard(Card c) {
+        //TODO: Buy card if have enough power, 
+        //is in the line up 
+        //and not in the deck, hand or discard or you don't own the card
+        //TODO: Check current player that owns the card
+        //TODO: Clean Code
+        Card_Logic logic = c.getCardLogic();
+        if (!Hand.Contains(c) && !logic.getOwned() && logic.IsInPurchaseArea() && logic.IsInLineUp() && PlaySystem.getCurrentPlayer() == this)
+        {
+            //Add to discard Pile and Remove from line Up list and set ownership to player
+            //Need If here to check if you release the mouse button then you buy it rather than just when you hover over a player
+            if (Input.GetMouseButtonUp(0)) {
+                c.getCardLogic().setPlayerOwned(this);
+                DiscardCard(c);
+                Play_Board.RemoveFromLineUp(c);
+            }
         }
     }
 

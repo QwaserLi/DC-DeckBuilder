@@ -11,7 +11,7 @@ public class PlaySystem : MonoBehaviour
     public int AmtPlayers;
 
     public List<Player> players;
-    private Player currentPlayer;
+    private static Player currentPlayer;
     // Start is called before the first frame update
 
     private Play_Board playBoard;
@@ -135,6 +135,8 @@ public class PlaySystem : MonoBehaviour
         }
     }
 
-
+    public static Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 
 }

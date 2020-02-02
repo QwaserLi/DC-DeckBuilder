@@ -22,6 +22,9 @@ public class Card_Logic : MonoBehaviour
     private Player PlayerOwned;
     private bool isOwned;
 
+    //For buying so it doesnt snapback but goes to discard instead
+    private bool isInPurchaseArea;
+
     //TEMP: Put here for now as image of the cards need to Change 
     public Sprite front_Sprite;
     public Sprite back_Sprite;
@@ -71,6 +74,7 @@ public class Card_Logic : MonoBehaviour
         isDragging = false;
 
         //TODO: Need to make it so it only snaps back in some cases when in hand and when on the line up otherwise dont snap back
+        //TODO: Currently you can move cards in the discard pile and it can snap back so make that you cant move cards in the discard pile
         if (!FaceDown) {
             transform.position = snapBackPos;
         }
@@ -107,16 +111,31 @@ public class Card_Logic : MonoBehaviour
     public void setPlayerOwned(Player player) {
         PlayerOwned = player;
         isOwned = true;
+        transform.parent = player.transform;
+
     }
 
     public bool getOwned() {
         return isOwned;
     }
 
+    public bool IsInPurchaseArea()
+    {
+        return isInPurchaseArea;
+    }
+
+    public bool IsInLineUp()
+    {
+        return isInLineUp;
+    }
+
     public Player getPlayerOwned() {
         return PlayerOwned;
     }
 
+    public void setIsInPurchaseArea(bool area) {
+        isInPurchaseArea = area;
+    }
 
     //Sets SnapBackpos to the current position
     public void setSnapBackPos() {

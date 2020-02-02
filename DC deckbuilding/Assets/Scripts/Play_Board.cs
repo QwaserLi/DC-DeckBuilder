@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Play_Board : MonoBehaviour
 {
-
-
     List<Card> MainDeck = new List<Card>();
-    List<Card> LineUp = new List<Card>();
+    private static List<Card> LineUp = new List<Card>();
     List<Card> Kicks;
     List<Card> Weaknesses;
 
@@ -29,7 +27,6 @@ public class Play_Board : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         MainDeckPos = transform.Find("MainDeck").position;
         LineUpStartPos = transform.Find("LineUp Start").position;
         KickPilePos = transform.Find("Kick").position;
@@ -85,6 +82,10 @@ public class Play_Board : MonoBehaviour
 
     }
 
+    public static void RemoveFromLineUp(Card c) {
+        LineUp.Remove(c);
+        c.getCardLogic().RemoveFromLineUp();
+    }
 
     //GIZMOS
     void OnDrawGizmos()
