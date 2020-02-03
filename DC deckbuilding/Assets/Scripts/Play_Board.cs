@@ -63,7 +63,7 @@ public class Play_Board : MonoBehaviour
         List<Card> sublist = MainDeck.GetRange(0, Amount_to_add);
         //Flip cards now because they are visible
         foreach (Card c in sublist)
-            c.getCardLogic().FlipCard();
+            c.getCardLogic().SetFaceUp();
 
         LineUp.AddRange(sublist);
         MainDeck.RemoveRange(0, Amount_to_add);

@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         }
 
 
-        DrawCards(4);
+        DrawCards(5);
     }
 
     void addCardToDeck(Card card) {
@@ -71,24 +71,44 @@ public class Player : MonoBehaviour
         }
     }
 
+    void putDiscardIntoDeck() {
+        //Add cards from discard into deck and clear discard
+        Deck.AddRange(Discard_Pile);
+        Discard_Pile.Clear();
+        //Flip each card over and set position
+        foreach (Card c in Deck) {
+            c.getCardLogic().SetFaceDown();
+            c.gameObject.transform.position = DeckPos;
+        }
+    }
+
 
     public void DrawCards(int Amount) {
-        if (Amount >= Deck.Count)
+        List<Card> sublist;
+        if (Deck.Count == 0)
         {
+            putDiscardIntoDeck();
+            ShuffleDeck();
+        }
+        else if (Amount > Deck.Count)
+        {
+
             //TEMP: Make sure to shuffle deck when not enough cards to draw;
-            print("Not enough Cards in deck");
-            return;
-            //Draw Remaining cards in deck then shuffle discard and draw the remaining
+            //Draw Remaining cards in deck then shuffle discard and draw the amount of cards you still need to card
+            sublist = Deck.GetRange(0, Deck.Count-1);
+            Hand.AddRange(sublist);
+            Amount -= Deck.Count;
+            putDiscardIntoDeck();
+            ShuffleDeck();
 
         }
-        List<Card> sublist = Deck.GetRange(0, Amount);
-
-
+        sublist = Deck.GetRange(0, Amount);
+ 
         //Put cards into hand and Flip cards now because they are now visible
         Hand.AddRange(sublist);
         for (int i = 0; i < Hand.Count;i++)
         {
-            Hand[i].getCardLogic().FlipCard();
+            Hand[i].getCardLogic().SetFaceUp();
             Vector3 newCardPos = HandStartPos;
 
             //TODO/TEMP: Will have to change it when making it multiplayer

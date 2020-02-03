@@ -96,16 +96,18 @@ public class Card_Logic : MonoBehaviour
         hoveringCard = false;
     }
 
-    public void FlipCard() {
-        FaceDown = !FaceDown;
-        //TEMP for card facing down
-        if (FaceDown)
-        {
-            spriteRenderer.sprite = back_Sprite;
-        }
-        else {
-            spriteRenderer.sprite = front_Sprite;
-        }
+    public void SetFaceDown()
+    {
+        FaceDown = true;
+        spriteRenderer.sprite = back_Sprite;
+
+    }
+
+    public void SetFaceUp()
+    {
+        FaceDown = false;
+        spriteRenderer.sprite = front_Sprite;
+
     }
 
     public void setPlayerOwned(Player player) {

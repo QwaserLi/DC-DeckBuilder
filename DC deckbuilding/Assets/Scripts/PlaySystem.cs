@@ -100,7 +100,7 @@ public class PlaySystem : MonoBehaviour
         currentPlayer.DiscardHand();
         currentPlayer.DrawCards(5);
         playBoard.AddCardsToLineUp();
-        UnRenderHand();
+        //UnRenderHand();
         changePlayerTurn();
         RenderPlayerHand();
     }
