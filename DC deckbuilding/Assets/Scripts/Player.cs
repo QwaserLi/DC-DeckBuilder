@@ -92,7 +92,6 @@ public class Player : MonoBehaviour
         }
         else if (Amount > Deck.Count)
         {
-
             //TEMP: Make sure to shuffle deck when not enough cards to draw;
             //Draw Remaining cards in deck then shuffle discard and draw the amount of cards you still need to card
             sublist = Deck.GetRange(0, Deck.Count-1);
