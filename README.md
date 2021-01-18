@@ -6,4 +6,4 @@ currency used to buy cards) has not been implemented.
 
 There is a bug at the moment where after buying cards you might not draw the right amount of cards in the following turn.
 
-THIS PROJECT HAS BEEN DROPPED FOR PERSONAL REASONS.
+THIS PROJECT HAS BEEN DROPPED.
